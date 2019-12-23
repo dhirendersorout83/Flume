@@ -1,0 +1,78 @@
+Source:
+
+Sink:
+
+Channel:
+Types of Channel in Flume
+=================================================
+i. Memory Channel: Apache Flume Channel
+----------------------------------------------
+Basically, with configurable max size, all the events are stored in an in-memory queue. Moreover, it is ideal for flows which need higher throughput. Also, those are prepared to lose the staged data in the event of agent failures. The following information consist Property name with a description of Memory Flume Channel.
+
+Property names with descriptions are:
+
+type – The component type name needs to be a memory.
+
+capacity (100) – The maximum number of events stored in the Flume channel.
+
+transactionCapacity (100) – The maximum number of events the channel will take from a source or give to a sink per transaction.
+
+keep-alive (3) – Timeout in seconds for adding or removing an event.
+
+byteCapacityBufferPercentage (20) – Defines the percent of buffer between byteCapacity and the estimated total size of all events in the channel, to account for data in headers.
+
+byteCapacity – Maximum total bytes of memory allowed as a sum of all events in this channel. The implementation only counts the Event body, which is the reason for providing the byteCapacityBufferPercentage configuration parameter as well. Defaults to a computed value equal to 80% of the maximum memory available to the JVM (i.e. 80% of the -Xmx value passed on the command line).
+
+So, let’s see an example for agent a1:
+
+a1.channels = c1
+a1.channels.c1.type = memory
+a1.channels.c1.capacity = 10000
+a1.channels.c1.transactionCapacity = 10000
+a1.channels.c1.byteCapacityBufferPercentage = 20
+a1.channels.c1.byteCapacity = 800000
+
+ii. JDBC Channel: Apache Flume Channel
+--------------------------------------------
+However, all the Flume events here are stored in a persistent storage that’s backed by a database. Moreover, only embedded derby is supported by the JDBC channel currently. Also, we can say it is a very durable channel that’s ideal for flows where recoverability is important. The following information consist Property name with a description of JDBC Flume Channel.
+
+Property names with descriptions are:
+
+type – The component type name, needs to be jdbc.
+
+db.type (DERBY) – Database vendor, needs to be DERBY.
+
+driver.class (org.apache.derby.jdbc.EmbeddedDriver) – Class for vendor’s JDBC driver.
+
+driver.url (constructed from other properties) – JDBC connection URL.
+
+db.username (“sa”) – User id for db connection.
+
+db.password – Password for db connection.
+
+connection.properties.file (true)- JDBC Connection property file path.
+
+create.schema (true) – If true, then creates db schema if not there.
+
+create.index (true) – Create indexes to speed up lookups.
+
+create.foreignkey (true)
+
+Transaction.isolation Maximum.connections (“READ_COMMITTED” 10) – 
+Isolation level for db session READ_UNCOMMITTED, READ_COMMITTED, SERIALIZABLE, REPEATABLE_READ
+Max connections allowed to db.
+
+maximum.capacity 0 (unlimited) – Max number of events in the channel.
+
+sysprop.* – DB Vendor specific properties.
+
+sysprop.user.home – Home path to store embedded Derby database.
+
+Also, see an example for agent a1
+
+a1.channels = c1
+
+a1.channels.c1.type = jdbc
+
+
+
