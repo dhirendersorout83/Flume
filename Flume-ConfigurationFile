@@ -1,0 +1,30 @@
+Components: Source, Channel and Sink
+
+define source, channel and sink. multiple source can be defined with space separated
+====================================================================================
+#Define the components 
+agent1.sources=src1 //  
+agent1.channels=chn1 // define channel
+agent1.sinks=snk1
+
+#Define the source type and properties
+====================================================================================
+agent1.sources.src1.type=netcat
+agent1.sources.src1.bind=localhost // for source to attach to host, we use "bind" , for sink, we use hostname
+agent1.sources.src1.port=1234
+
+#Define the sink type and properties
+====================================================================================
+agent1.sinks.snk1.type=logger
+
+#Define the channel type and properties
+====================================================================================
+agent1.channels.chn1.type=memory
+agent1.channels.chn1.capacity=10000
+
+agent1.channels.chn1.transactionCapacity=1000
+
+#Connect the source and sink with the channel
+====================================================================================
+agent1.sources.src1.channels=chn1
+agent1.sinks.snk1.channel=chn1
